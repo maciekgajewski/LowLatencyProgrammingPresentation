@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+
+<section>Title</section>
+<section>About Optiver</section>
+<section>Why do we need low-latency</section>
+<section>What is low latency</section>
+<section>No silver bullet, know you system, know your library, measure</section>
+<section>Step 1 - idnetify the hot path</section>
+<section>Profiling doesn't work. microbenchmark</section>
+<section>Problem introduction - dictionary lookup</section>
+<section>Google Benchmark</section>
+<section>Step 2 - Algorithmic complexity</section>
+<section>Callgrind, show allcoations as the issue</section>
+<section>Step 3 - allocations</section>
+<section>Papi - cache misses</section>
+<section>Explain std::unordered_map</section>
+<section>Propose alternative map</section>
+<section>Step 4 - cache coherency</section>
+<section>Perf - find bottleneck</section>
+<section>Explain pipeline stalling</section>
+<section>Step 5 - CPU instructions per cycle</section>
+<section>Summary and conclusion</section>
+<section>Questions?</section>
+
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
