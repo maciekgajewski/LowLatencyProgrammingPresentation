@@ -64,17 +64,6 @@
 </section>
 
 <section>
-	TODO remove?
-	<h3>Why do we need low-latency</h3>
-	<ul>
-		<li>Market Making</li>
-		<li>Reacting quickly to market events</li>
-		TODO yada yada?
-	</ul>
-</section>
-
-
-<section>
 	<h3>What is low latency programming</h3>
 	<ul>
 		<li>It's not about troughput!</li>
@@ -85,6 +74,10 @@
 </section>
 
 <section>
+	TODO: how fast is fast? eiffel tower?
+</section>
+	
+	<section>
 	<h3>There is no silver bullet...</h3>
 	<ul>
 		<li>No compiler flags</li>
@@ -110,10 +103,78 @@
 	<h3>Identify the hot path</h3>
 </section>
 
+<section>
+	<h3>Identify the hot path</h3>
+	<ul>
+		<li>Profilers don't work for events</li>
+		<li>Know which code is "hot"</li>
+		<li>Microbenchmark the hot code</li>
+	</ul>
+</section>
 
-<section>Profiling doesn't work. microbenchmark</section>
-<section>Problem introduction - dictionary lookup</section>
-<section>Google Benchmark</section>
+<section>
+	<h3>Today's excersise</h3>
+	<pre><code class="cpp">
+class Dictionary
+{
+public:
+	Dictionary(const std::vector&lt;std::string&gt;& words);
+
+	bool in_dictionary(string_view word) const;
+};
+	</code></pre>
+</section>
+
+<section>
+	<h3>Google Benchmark (1)</h3>
+	<pre><code class="cpp">
+void InDictionary(benchmark::State& state)
+{
+	int idx = 0;
+	Dictionary dict(words);
+
+	for(auto _ : state)
+	{
+		const std::string& word = words[idx];
+		idx = (idx+1) % words.size();
+		benchmark::DoNotOptimize(allFound &= dict.in_dictionary(word));
+	}
+}
+	</code></pre>
+</section>
+
+<section>
+		<h3>Google Benchmark (2)</h3>
+		<pre><code class="cpp">
+void NotInDictionary(benchmark::State& state)
+{
+	int idx = 0;
+	Dictionary dict(words);
+
+	for(auto _ : state)
+	{
+		string_view word = unknown_words[idx];
+		idx = (idx+1) % words.size();
+		benchmark::DoNotOptimize(allFound &= dict.in_dictionary(string_view));
+	}
+}
+		</code></pre>
+	</section>
+
+	
+<section>
+	<h3>Google Benchmark (3)</h3>
+	<pre>
+Run on (4 X 3504 MHz CPU s)
+2018-01-17 14:19:55
+-----------------------------------------------------------------------
+Benchmark                                Time           CPU Iterations
+-----------------------------------------------------------------------
+<span style="color:green">InDictionary</span>                           <span style="color:yellow">667 ns        656 ns</span>    <span style="color:cyan">1177411</span>
+<span style="color:green">NotInDictionary</span>                        <span style="color:yellow">681 ns        659 ns</span>    <span style="color:cyan">1189021</span>
+</pre>
+</section>
+
 <section>Step 2 - Algorithmic complexity</section>
 <section>Callgrind, show allcoations as the issue</section>
 <section>Step 3 - allocations</section>
@@ -138,6 +199,7 @@
 			// More info https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
 				history: true,
+				width: "80%",
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
