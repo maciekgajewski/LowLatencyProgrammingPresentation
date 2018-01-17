@@ -53,11 +53,64 @@
 	<img src="pics/Maciek.jpg" class="stretch"/>
 </section>
 
+<section>
+	<h3>About this talk</h3>
+	<ul>
+		<li>Based on a Low Latency Workshop</li>
+		<li>Process of improving latency</li>
+		<li>Some useful tools</li>
+		<li>Actual C++ code</li>
+	</ul>
+</section>
 
-<section>Why do we need low-latency</section>
-<section>What is low latency</section>
-<section>No silver bullet, know you system, know your library, measure</section>
-<section>Step 1 - idnetify the hot path</section>
+<section>
+	TODO remove?
+	<h3>Why do we need low-latency</h3>
+	<ul>
+		<li>Market Making</li>
+		<li>Reacting quickly to market events</li>
+		TODO yada yada?
+	</ul>
+</section>
+
+
+<section>
+	<h3>What is low latency programming</h3>
+	<ul>
+		<li>It's not about troughput!</li>
+		<li>Ability to quickly react to an event</li>
+		<li>CPU-bound tasks, IO is outside of the scope</li>
+		<li>It's all about time</li>
+	</ul>
+</section>
+
+<section>
+	<h3>There is no silver bullet...</h3>
+	<ul>
+		<li>No compiler flags</li>
+		<li>No kernel config option</li>
+		<li>No library</li>
+	</ul>
+
+</section>
+
+<section>
+	<h3>...but there are golden rules</h3>
+	<ul>
+		<li>Know your hardware</li>
+		<li>Know your OS</li>
+		<li>Know your libraries</li>
+		<li>Know your application</li>
+	</ul>
+</section>
+
+
+<section>
+	<h1>Step 1</h1>
+	<h3>Identify the hot path</h3>
+</section>
+
+
 <section>Profiling doesn't work. microbenchmark</section>
 <section>Problem introduction - dictionary lookup</section>
 <section>Google Benchmark</section>
