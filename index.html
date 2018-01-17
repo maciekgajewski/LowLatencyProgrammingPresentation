@@ -144,8 +144,8 @@ void InDictionary(benchmark::State& state)
 </section>
 
 <section>
-		<h3>Google Benchmark (2)</h3>
-		<pre><code class="cpp">
+	<h3>Google Benchmark (2)</h3>
+	<pre><code class="cpp">
 void NotInDictionary(benchmark::State& state)
 {
 	int idx = 0;
@@ -158,12 +158,21 @@ void NotInDictionary(benchmark::State& state)
 		benchmark::DoNotOptimize(allFound &= dict.in_dictionary(string_view));
 	}
 }
-		</code></pre>
-	</section>
+	</code></pre>
+</section>
+
+<section>
+	<h3>Google Benchmark (3)</h3>
+	<pre><code class="cpp">
+BENCHMARK(InDictionary);
+BENCHMARK(NotInDictionary);
+BENCHMARK_MAIN();
+	</code></pre>
+</section>
 
 	
 <section>
-	<h3>Google Benchmark (3)</h3>
+	<h3>Google Benchmark (4)</h3>
 	<pre>
 Run on (4 X 3504 MHz CPU s)
 2018-01-17 14:19:55
@@ -175,16 +184,97 @@ Benchmark                                Time           CPU Iterations
 </pre>
 </section>
 
-<section>Step 2 - Algorithmic complexity</section>
-<section>Callgrind, show allcoations as the issue</section>
+<section>
+	<h1>Step 2</h1>
+	<h3>Algorithmic complexity</h3>
+</section>
+
+<section>
+	<h3>Naive implementation</h3>
+	<pre><code class="cpp">
+class Dictionary
+{
+public:
+	Dictionary(const std::vector&lt;std::string&gt;& words)
+		: _container(words.begin(), words.end())
+	{}
+
+
+	bool in_dictionary(string_view word) const
+	{
+		return _container.find({word.data(), word.size()}) != _container.end();
+	}
+
+private:
+	std::set&lt;std::string&gt; _container;
+};
+	</code></pre>
+</section>
+
+<section data-transition="none">
+	<h3>Naive implementation</h3>
+	<pre><code class="cpp">
+class Dictionary
+{
+public:
+	Dictionary(const std::vector&lt;std::string&gt;& words)
+		: _container(words.begin(), words.end())
+	{}
+
+
+	bool in_dictionary(string_view word) const
+	{
+		return _container.find({word.data(), word.size()}) != _container.end();
+	}
+
+private:
+	std::set&lt;std::string&gt; _container; // <-- O(log(N))
+};
+	</code></pre>
+</section>
+
+<section data-transition="none">
+	<h3>Naive implementation</h3>
+	<pre><code class="cpp">
+class Dictionary
+{
+public:
+	Dictionary(const std::vector&lt;std::string&gt;& words)
+		: _container(words.begin(), words.end())
+	{}
+
+
+	bool in_dictionary(string_view word) const
+	{
+		return _container.find({word.data(), word.size()}) != _container.end();
+	}
+
+private:
+	std::unordered_set&lt;std::string&gt; _container; // <-- O(1)
+};
+	</code></pre>
+</section>
+
+<section>
+	<canvas data-chart="bar" height="100%">
+		Benchmark, InDictionary, NotInDictionary
+		set, 556, 538
+		unordered_set, 112, 167
+	</canvas>
+</section>
+
 <section>Step 3 - allocations</section>
+<section>Callgrind, show allcoations as the issue</section>
+
+<section>Step 4 - cache coherency</section>
 <section>Papi - cache misses</section>
 <section>Explain std::unordered_map</section>
 <section>Propose alternative map</section>
-<section>Step 4 - cache coherency</section>
+
+<section>Step 5 - CPU instructions per cycle</section>
 <section>Perf - find bottleneck</section>
 <section>Explain pipeline stalling</section>
-<section>Step 5 - CPU instructions per cycle</section>
+
 <section>Summary and conclusion</section>
 <section>Questions?</section>
 
@@ -200,14 +290,34 @@ Benchmark                                Time           CPU Iterations
 			Reveal.initialize({
 				history: true,
 				width: "80%",
+				transitionSpeed: 'fast',
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/chart/Chart.min.js' },
+					{ src: 'plugin/chart/csv2chart.js' },
+				],
+
+				chart: {
+						defaults: { 
+							global: { 
+								title: { fontColor: "#FFF" }, 
+								legend: {
+									labels: { fontColor: "#FFF" },
+								},
+							},
+							scale: { 
+								scaleLabel: { fontColor: "#FFF" }, 
+								gridLines: { color: "#FFF", zeroLineColor: "#FFF" }, 
+								ticks: { fontColor: "#FFF" }, 
+							} 
+						},
+						bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					},
 			});
 			Reveal.configure({ slideNumber: true, slideNumber: 'c/t' });
 		</script>
