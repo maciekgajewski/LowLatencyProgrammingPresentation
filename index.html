@@ -131,7 +131,7 @@ class Dictionary
 public:
 	Dictionary(const std::vector&lt;std::string&gt;& words);
 
-	bool in_dictionary(string_view word) const;
+	bool in_dictionary(std::string_view word) const;
 };
 	</code></pre>
 </section>
@@ -146,9 +146,9 @@ void InDictionary(benchmark::State& state)
 
 	for(auto _ : state)
 	{
-		const std::string& word = words[idx];
+		std::string_view word = words[idx];
 		idx = (idx+1) % words.size();
-		benchmark::DoNotOptimize(allFound &= dict.in_dictionary(word));
+		benchmark::DoNotOptimize(dict.in_dictionary(word));
 	}
 }
 	</code></pre>
@@ -164,9 +164,9 @@ void NotInDictionary(benchmark::State& state)
 
 	for(auto _ : state)
 	{
-		string_view word = unknown_words[idx];
+		std::string_view word = unknown_words[idx];
 		idx = (idx+1) % words.size();
-		benchmark::DoNotOptimize(allFound &= dict.in_dictionary(string_view));
+		benchmark::DoNotOptimize(dict.in_dictionary(word));
 	}
 }
 	</code></pre>
@@ -211,7 +211,7 @@ public:
 	{}
 
 
-	bool in_dictionary(string_view word) const
+	bool in_dictionary(std::string_view word) const
 	{
 		return _container.find({word.data(), word.size()}) != _container.end();
 	}
@@ -233,7 +233,7 @@ public:
 	{}
 
 
-	bool in_dictionary(string_view word) const
+	bool in_dictionary(std::string_view word) const
 	{
 		return _container.find({word.data(), word.size()}) != _container.end();
 	}
@@ -245,7 +245,7 @@ private:
 </section>
 
 <section data-transition="none">
-	<h3>Naive implementation</h3>
+	<h3>Improved implementation</h3>
 	<pre class="stretch"><code class="cpp">
 class Dictionary
 {
@@ -255,7 +255,7 @@ public:
 	{}
 
 
-	bool in_dictionary(string_view word) const
+	bool in_dictionary(std::string_view word) const
 	{
 		return _container.find({word.data(), word.size()}) != _container.end();
 	}
@@ -275,8 +275,97 @@ private:
 	</canvas>
 </section>
 
-<section>Step 3 - allocations</section>
-<section>Callgrind, show allcoations as the issue</section>
+<section>
+	<h1>Step 3 - allocations</h1>
+</section>
+
+<section>
+	<h3>Valgrind</h3>
+	<ul>
+		<li>Instrumentation framework</li>
+		<li>Unix only</li>
+		<li>Callgdrind - profiler</li>
+		<li>KCachegrind - GUI</li>
+	</ul>
+</section>
+
+<section>
+	<h3>KCachegrind output</h3>
+	<div class="stretch">
+		<img src="pics/callgrind-v1.png"/>
+	</div>
+</section>
+
+<section>
+	<h3>KCachegrind output</h3>
+	<div class="stretch">
+		<img src="pics/callgrind-v1-cropped.png"/>
+	</div>
+</section>
+
+<section data-transition="none">
+	<h3>Improved implementation</h3>
+	<pre class="stretch"><code class="cpp">
+class Dictionary
+{
+public:
+	Dictionary(const std::vector&lt;std::string&gt;& words)
+		: _container(words.begin(), words.end())
+	{}
+
+
+	bool in_dictionary(std::string_view word) const
+	{
+		// This line allocates, creating std::string from std::string_view
+		return _container.find({word.data(), word.size()}) != _container.end();
+	}
+
+private:
+	std::unordered_set&lt;std::string&gt; _container; // Stores std::string
+};
+	</code></pre>
+</section>
+
+<section data-transition="none">
+	<h3>Non-allocating implementation</h3>
+	<pre class="stretch"><code class="cpp">
+class Dictionary
+{
+public:
+	Dictionary(const std::vector&lt;std::string&gt;& words)
+		: _data(words.begin(), words.end())
+		, _index(_data.begin(), _data.end())
+	{}
+
+
+	bool in_dictionary(std::string_view word) const
+	{
+		return _index.find(word) != _container.end(); // No allocation!
+	}
+
+private:
+	std::vector&lt;std::string&gt; _data; // Stores std::string
+	std::unordered_set&lt;std::string_view&gt; _index; // Stores views
+};
+	</code></pre>
+</section>
+
+<section>
+	<h3>KCachegrind output</h3>
+	<div class="stretch">
+		<img src="pics/callgrind-v2.png"/>
+	</div>
+</section>
+
+<section>
+	<h3>Removing allocations</h3>
+	<canvas data-chart="bar" height="100%">
+		Benchmark, InDictionary, NotInDictionary
+		set, 771, 867
+		unordered_set, 178, 193
+		no alloc, 108, 116
+	</canvas>
+</section>
 
 <section>Step 4 - cache coherency</section>
 <section>Papi - cache misses</section>
@@ -289,6 +378,14 @@ private:
 
 <section>Summary and conclusion</section>
 <section>Questions?</section>
+
+
+
+
+
+
+
+
 
 
 			</div>
