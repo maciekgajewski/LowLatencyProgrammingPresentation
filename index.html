@@ -28,7 +28,8 @@
 
 <section data-background-image="pics/Amsterdam.jpg">
 	<h1>Low Latency Programming</h1>
-	Maciej Gajewski, Optiver
+	<div>Maciej Gajewski, Optiver</div>
+	<img src="pics/optiver_logo_white.png" style="border:none; background:none"/>
 </section>
 
 <section data-background-image="pics/Amsterdam.jpg">
@@ -39,7 +40,8 @@
 		<li>400 people</li>
 		<li>34 nationalities</li>
 		<li class="fragment fade-in"><b>Summer internship!</b></li>
-	</ul>
+	</ul><br/>
+	<img src="pics/optiver_logo_white.png" style="border:none; background:none"/>
 </section>
 
 <section data-background-image="pics/Amsterdam.jpg">
@@ -50,7 +52,9 @@
 		<li>20 years of C++</li>
 		<li>4 years at Optiver</li>
 	</ul>
-	<img src="pics/Maciek.jpg" class="stretch"/>
+	<div  class="stretch">
+		<img src="pics/Maciek.jpg"/>
+	</div>
 </section>
 
 <section>
@@ -58,7 +62,7 @@
 	<ul>
 		<li>Based on a Low Latency Workshop</li>
 		<li>Process of improving latency</li>
-		<li>Some useful tools</li>
+		<li>Some useful tools (mostly Linux)</li>
 		<li>Actual C++ code</li>
 	</ul>
 </section>
@@ -86,8 +90,11 @@
 <section>
 	<h3>...but there are golden rules</h3>
 	<ul>
+		<li>Measure</li>
+		<li>Measure</li>
+		<li>Measure</li>
+		<li>Do not optimize prematurely</li>
 		<li>Know your hardware</li>
-		<li>Know your OS</li>
 		<li>Know your libraries</li>
 		<li>Know your application</li>
 	</ul>
@@ -97,18 +104,9 @@
 	<h3>How fast is fast?</h3>
 	<div class="stretch">
 		<img src="pics/Eiffel-Tower.jpg"/>
-		<img src="pics/arrow-300m.png" class="fragment fade-in" style="border: none"/>
-		<img src="pics/arrow-1us.png" class="fragment fade-in" style="border: none"/>
+		<img src="pics/arrow-300m.png" class="fragment fade-in" style="border: none; background: none"/>
+		<img src="pics/arrow-1us.png" class="fragment fade-in" style="border: none; background: none"/>
 	</div>
-	<!--
-	<table class="stretch">
-		<tr>
-			<td><img src="pics/Eiffel-Tower.jpg"/></td>
-			<td>1</td>
-			<td>2</td>
-		</tr>
-	</table>
-	-->
 </section>
 	
 <section>
@@ -192,8 +190,8 @@ Run on (4 X 3504 MHz CPU s)
 -----------------------------------------------------------------------
 Benchmark                                Time           CPU Iterations
 -----------------------------------------------------------------------
-<span style="color:green">InDictionary</span>                           <span style="color:yellow">667 ns        656 ns</span>    <span style="color:cyan">1177411</span>
-<span style="color:green">NotInDictionary</span>                        <span style="color:yellow">681 ns        659 ns</span>    <span style="color:cyan">1189021</span>
+<span style="color:green">InDictionary</span>                           <span style="color:yellow">725 ns        725 ns</span>     <span style="color:cyan">884585</span>
+<span style="color:green">NotInDictionary</span>                        <span style="color:yellow">812 ns        811 ns</span>     <span style="color:cyan">838950</span>
 </pre>
 </section>
 
@@ -204,7 +202,7 @@ Benchmark                                Time           CPU Iterations
 
 <section>
 	<h3>Naive implementation</h3>
-	<pre><code class="cpp">
+	<pre class="stretch"><code class="cpp">
 class Dictionary
 {
 public:
@@ -226,7 +224,7 @@ private:
 
 <section data-transition="none">
 	<h3>Naive implementation</h3>
-	<pre><code class="cpp">
+	<pre class="stretch"><code class="cpp">
 class Dictionary
 {
 public:
@@ -248,7 +246,7 @@ private:
 
 <section data-transition="none">
 	<h3>Naive implementation</h3>
-	<pre><code class="cpp">
+	<pre class="stretch"><code class="cpp">
 class Dictionary
 {
 public:
