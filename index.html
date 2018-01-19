@@ -278,7 +278,7 @@ private:
 </section>
 
 <section>
-	<h3>Improving algorithmic complexity</h3>
+	<h3>Benchmark: Improving algorithmic complexity</h3>
 	<canvas data-chart="bar" height="100%">
 		Benchmark, InDictionary, NotInDictionary
 		set, 771, 867
@@ -373,7 +373,7 @@ private:
 </section>
 
 <section>
-	<h3>Removing allocations</h3>
+	<h3>Benchmark: Removing allocations</h3>
 	<canvas data-chart="bar" height="100%">
 		Benchmark, InDictionary, NotInDictionary
 		set, 771, 867
@@ -499,7 +499,7 @@ private:
 </section>
 
 <section>
-	<h3>Open addressing</h3>
+	<h3>Benchmark: Open addressing</h3>
 	<canvas data-chart="bar" height="100%">
 		Benchmark, InDictionary, NotInDictionary
 		set, 771, 867
@@ -512,8 +512,59 @@ private:
 
 
 
-<section>Step 5 - CPU instructions per cycle</section>
-<section>Perf - find bottleneck</section>
+<section>
+	<h1>Step 5</h1>
+	<h3>CPU instructions</h3>
+</section>
+
+<section>
+	<h3>Perf</h3>
+	<ul>
+		<li>"The official" Linux profiler</li>
+		<li>Has access to the same counters as PAPI</li>
+		<li>Instruments running binary</li>
+		<li>Produces nice reports</li>
+		<li>And so much more!</li>
+	</ul>
+	<div>
+		<img src="pics/tool.png"/>
+	</div>
+</section>
+
+
+<section>
+	<h3>Perf report</h3>
+	<pre>
+  0,12 │       mov    %edx,0x8(%rsp)
+       │       mov    $0xc70f6907,%edx
+  0,16 │     → callq  std::_Hash_bytes(void const*, unsigned long, unsigned long)@plt
+       │                     auto idx = hash % hashTable_.size();
+       │       xor    %edx,%edx
+  0,12 │       mov    %rax,%r14
+<span style="color:red"/> 18,01 │       div    %rbx</span>
+       │           const_reference operator[](size_type __n) const _GLIBCXX_NOEXCEPT
+       │           { return *(this->_M_impl._M_start + __n); }
+  0,08 │       mov    %rdx,%rax
+       │       mov    %rdx,%r12
+  0,47 │       shl    $0x4,%rax
+  0,27 │       add    %r15,%rax
+       │                             if (!entry.string)
+<span style="color:red"/> 35,52 │       mov    0x8(%rax),%rdx</span>
+  0,12 │       mov    %rax,%rcx
+       │       test   %rdx,%rdx
+  0,47 │     ↓ jne    1a4
+       │     ↓ jmpq   230
+       │       nop
+       │                             idx = (idx+1) % hashTable_.size();
+  3,06 │180:   lea    0x1(%r12),%rax
+       │       xor    %edx,%edx
+<span style="color:red"/>  5,89 │       div    %rbx</span>
+       │       mov    %rdx,%rcx
+       │       mov    %rdx,%r12
+ 	</pre>
+</section>
+
+
 <section>Explain pipeline stalling</section>
 
 <section>Summary and conclusion</section>
