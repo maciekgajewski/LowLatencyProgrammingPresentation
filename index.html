@@ -388,7 +388,7 @@ private:
 </section>
 
 <section>
-	<h3>Closed hashing</h3>
+	<h3>Open addressing</h3>
 	<div class="stretch">
 		<img src="pics/closed-hashing.png"/>
 	</div>
@@ -407,11 +407,89 @@ private:
 		<< events.get&lt;PAPI_L1_DCM&gt().counter() / state.iterations()
 		<< " L1 cache misses";
 	</code></pre>
+</section>
 
+<section>
+	<h3>Papi - output</h3>
+	<pre>
+98 L1 cache misses
+16 L1 cache misses
+7.89 L1 cache misses
+6.617 L1 cache misses
+6.3805 L1 cache misses
+6.03766 L1 cache misses
+6.03299 L1 cache misses
+6.03683 L1 cache misses
+	</pre>
+</section>
+
+<section>
+	<h3>Open addressing implementation</h3>
+	<pre><code class="cpp">
+	struct Entry
+	{
+		std::size_t hash;
+		const std::string* string = nullptr;
+	};
+
+	std::vector&lt;Entry&gt; hashTable_;
+	</code></pre>
+</section>
+
+<section>
+	<h3>Open addressing implementation</h3>
+	<pre class="stretch"><code class="cpp">
+	bool in_dictionary(std::string_view word) const
+	{
+		auto hash = std::hash&lt;std::string_view&gt;()(word);
+		auto idx = hash % hashTable_.size();
+
+		while (true)
+		{
+			const Entry& entry = hashTable_[idx];
+
+			// detect bucket
+			if (!entry.string)
+				return false;
+
+			// detect match
+			if(entry.hash == hash && *entry.string == word)
+				return true;
+
+			// probe
+			idx = (idx + 1) % hashTable_.size();
+		}
+	}
+	</code></pre>
+</section>
+
+<section>
+	<h3>Papi - output/w open addressing</h3>
+	<pre>
+89 L1 cache misses
+12.3 L1 cache misses
+5.08 L1 cache misses
+3.869 L1 cache misses
+3.6669 L1 cache misses
+3.9241 L1 cache misses
+3.93565 L1 cache misses
+3.9278 L1 cache misses
+	</pre>
+</section>
+
+<section>
+	<h3>Open addressing</h3>
+	<canvas data-chart="bar" height="100%">
+		Benchmark, InDictionary, NotInDictionary
+		set, 771, 867
+		unordered_set, 178, 193
+		no alloc, 108, 116
+		open addr, 74, 74
+	</canvas>
 </section>
 
 
-<section>Propose alternative map</section>
+
 
 <section>Step 5 - CPU instructions per cycle</section>
 <section>Perf - find bottleneck</section>
