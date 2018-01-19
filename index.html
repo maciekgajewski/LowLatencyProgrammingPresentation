@@ -37,8 +37,8 @@
 	<ul>
 		<li>Amsterdam, Sydney, Chicago, Shanghai</li>
 		<li>1986</li>
-		<li>400 people</li>
-		<li>34 nationalities</li>
+		<li>440 people</li>
+		<li>43 nationalities</li>
 		<li class="fragment fade-in"><b>Summer internship!</b></li>
 	</ul><br/>
 	<img src="pics/optiver_logo_white.png" style="border:none; background:none"/>
@@ -124,7 +124,18 @@
 </section>
 
 <section>
-	<h3>Today's excersise</h3>
+	<h3>Google Benchmark</h3>
+	<ul>
+		<li>Allows for easy creation of muicrobenchmarks</li>
+		<li><a href="https://github.com/google/benchmark">https://github.com/google/benchmark</a></li>
+	</ul>
+	<div>
+		<img src="pics/tool.png"/>
+	</div>
+</section>
+
+<section>
+	<h3>Today's excercise</h3>
 	<pre><code class="cpp">
 class Dictionary
 {
@@ -288,6 +299,9 @@ private:
 		<li>Callgdrind - profiler</li>
 		<li>KCachegrind - GUI</li>
 	</ul>
+	<div>
+		<img src="pics/tool.png"/>
+	</div>
 </section>
 
 <section>
@@ -370,7 +384,7 @@ private:
 
 <section>
 	<h1>Step 4</h1>
-	<h3>Cache coherency</h3>
+	<h3>Cache coherence</h3>
 </section>
 
 <section>
@@ -395,7 +409,19 @@ private:
 </section>
 
 <section>
-	<h3>Papi - hardware counters</h3>
+	<h3>Papi++</h3>
+	<ul>
+		<li>Provides access to Hardware Performance Counters from within the program</li>
+		<li><a href="https://github.com/david-grs/papipp"> https://github.com/david-grs/papipp</a></li>
+	</ul>
+	<div>
+		<img src="pics/tool.png"/>
+	</div>
+</section>
+
+
+<section>
+	<h3>Papi - example use</h3>
 	<pre><code class="cpp">
 	papi::event_set&lt;PAPI_TOT_INS, PAPI_TOT_CYC, PAPI_BR_MSP, PAPI_L1_DCM&gt events;
 	events.start_counters();
@@ -464,17 +490,12 @@ private:
 </section>
 
 <section>
-	<h3>Papi - output/w open addressing</h3>
-	<pre>
-89 L1 cache misses
-12.3 L1 cache misses
-5.08 L1 cache misses
-3.869 L1 cache misses
-3.6669 L1 cache misses
-3.9241 L1 cache misses
-3.93565 L1 cache misses
-3.9278 L1 cache misses
-	</pre>
+	<h3>Cache misses</h3>
+	<canvas data-chart="bar" height="100%">
+		Hashmap, Cache misses
+		Chaining, 6.03683
+		Open addressing, 3.9278
+	</canvas>
 </section>
 
 <section>
