@@ -490,7 +490,7 @@ private:
 </section>
 
 <section>
-	<h3>Cache misses</h3>
+	<h3>PAPI++: Cache misses</h3>
 	<canvas data-chart="bar" height="100%">
 		Hashmap, Cache misses
 		Chaining, 6.03683
@@ -564,8 +564,80 @@ private:
  	</pre>
 </section>
 
+<section>
+	<h3>Finding offending code</h3>
+	<pre class="stretch"><code class="cpp">
+	bool in_dictionary(std::string_view word) const
+	{
+		auto hash = std::hash&lt;std::string_view&gt;()(word);
+		auto idx = hash % hashTable_.size(); // <-- Flagged by perf
 
-<section>Explain pipeline stalling</section>
+		while (true)
+		{
+			const Entry& entry = hashTable_[idx];
+
+			// detect bucket
+			if (!entry.string)
+				return false;
+
+			// detect match
+			if(entry.hash == hash && *entry.string == word)
+				return true;
+
+			// probe
+			idx = (idx + 1) % hashTable_.size(); // <-- Flagged by perf
+		}
+	}
+	</code></pre>
+</section>
+
+<section>
+	<h3>Fixing offending code</h3>
+	<pre class="stretch"><code class="cpp">
+	bool in_dictionary(std::string_view word) const
+	{
+		auto hash = std::hash&lt;std::string_view&gt;()(word);
+		auto idx = hash & (hashTable_.size()-1); // Fixed?
+
+		while (true)
+		{
+			const Entry& entry = hashTable_[idx];
+
+			// detect bucket
+			if (!entry.string)
+				return false;
+
+			// detect match
+			if(entry.hash == hash && *entry.string == word)
+				return true;
+
+			// probe
+			idx = (idx + 1) & (hashTable_.size() - 1); // Fixed?
+		}
+	}
+	</code></pre>
+</section>
+
+<section>
+	<h3>PAPI++: Instructions per cycle</h3>
+	<canvas data-chart="bar" height="100%">
+		Implementation, Instructions per cycle
+		DIV, 0.62
+		AND, 0.80
+	</canvas>
+</section>
+
+<section>
+	<h3>Benchmark: Removing DIV</h3>
+	<canvas data-chart="bar" height="100%">
+		Benchmark, InDictionary, NotInDictionary
+		set, 771, 867
+		unordered_set, 178, 193
+		no alloc, 108, 116
+		open addr, 74, 74
+		no div, 53, 53
+	</canvas>
+</section>
 
 <section>Summary and conclusion</section>
 <section>Questions?</section>
