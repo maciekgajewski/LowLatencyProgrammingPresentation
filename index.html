@@ -137,7 +137,7 @@ public:
 </section>
 
 <section>
-	<h3>Google Benchmark (1)</h3>
+	<h3>Google Benchmark</h3>
 	<pre><code class="cpp">
 void InDictionary(benchmark::State& state)
 {
@@ -155,7 +155,7 @@ void InDictionary(benchmark::State& state)
 </section>
 
 <section>
-	<h3>Google Benchmark (2)</h3>
+	<h3>Google Benchmark</h3>
 	<pre><code class="cpp">
 void NotInDictionary(benchmark::State& state)
 {
@@ -173,7 +173,7 @@ void NotInDictionary(benchmark::State& state)
 </section>
 
 <section>
-	<h3>Google Benchmark (3)</h3>
+	<h3>Google Benchmark</h3>
 	<pre><code class="cpp">
 BENCHMARK(InDictionary);
 BENCHMARK(NotInDictionary);
@@ -183,7 +183,7 @@ BENCHMARK_MAIN();
 
 	
 <section>
-	<h3>Google Benchmark (4)</h3>
+	<h3>Google Benchmark</h3>
 	<pre>
 Run on (4 X 3504 MHz CPU s)
 2018-01-17 14:19:55
@@ -276,7 +276,8 @@ private:
 </section>
 
 <section>
-	<h1>Step 3 - allocations</h1>
+	<h1>Step 3</h1>
+	<h3>Allocations</h3>
 </section>
 
 <section>
@@ -367,9 +368,49 @@ private:
 	</canvas>
 </section>
 
-<section>Step 4 - cache coherency</section>
-<section>Papi - cache misses</section>
-<section>Explain std::unordered_map</section>
+<section>
+	<h1>Step 4</h1>
+	<h3>Cache coherency</h3>
+</section>
+
+<section>
+	<h3>std::unordered_map</h3>
+	<div class="stretch">
+		<img src="pics/chaining.png"/>
+	</div>
+</section>
+
+<section>
+	<h3>std::unordered_map</h3>
+	<div class="stretch">
+		<img src="pics/chaining-lookup.png"/>
+	</div>
+</section>
+
+<section>
+	<h3>Closed hashing</h3>
+	<div class="stretch">
+		<img src="pics/closed-hashing.png"/>
+	</div>
+</section>
+
+<section>
+	<h3>Papi - hardware counters</h3>
+	<pre><code class="cpp">
+	papi::event_set&lt;PAPI_TOT_INS, PAPI_TOT_CYC, PAPI_BR_MSP, PAPI_L1_DCM&gt events;
+	events.start_counters();
+
+	// Micro-benchmark loop is here
+
+	events.stop_counters();
+	std::cout
+		<< events.get&lt;PAPI_L1_DCM&gt().counter() / state.iterations()
+		<< " L1 cache misses";
+	</code></pre>
+
+</section>
+
+
 <section>Propose alternative map</section>
 
 <section>Step 5 - CPU instructions per cycle</section>
