@@ -108,7 +108,7 @@
 		<img src="pics/arrow-1us.png" class="fragment fade-in" style="border: none; background: none"/>
 	</div>
 </section>
-	
+
 <section>
 	<h1>Step 1</h1>
 	<h3>Identify the hot path</h3>
@@ -192,7 +192,7 @@ BENCHMARK_MAIN();
 	</code></pre>
 </section>
 
-	
+
 <section>
 	<h3>Google Benchmark</h3>
 	<pre>
@@ -597,7 +597,7 @@ private:
 	bool in_dictionary(std::string_view word) const
 	{
 		auto hash = std::hash&lt;std::string_view&gt;()(word);
-		auto idx = hash & (hashTable_.size()-1); // Fixed?
+		auto idx = hash & (hashTable_.size() - 1); // Fixed?
 
 		while (true)
 		{
@@ -639,8 +639,30 @@ private:
 	</canvas>
 </section>
 
-<section>Summary and conclusion</section>
-<section>Questions?</section>
+<section>
+	<h3>Summary</h3>
+	<ul>
+		<li>Always measure</li>
+		<li>Keep an eye on algorithmic complexity</li>
+		<li>Avoid allocations</li>
+		<li>Use cache efficiently</li>
+		<li>Look into generated assembly</li>
+	</ul>
+</section>
+
+
+<section>
+	<h3>The last slide</h3>
+	<ul>
+		<li>https://github.com/maciekgajewski/LowLatencyProgrammingPresentation</li>
+		<li>“When a Microsecond Is an Eternity", Carl Cook, CppCon 2017</li>
+		<li>"What every programmer should know about memory", Ulrich Drepper, 2007</li>
+		<li>Papi++ : https://github.com/david-grs/papipp</li>
+		<li>Google Benchmark</li>
+		<li>Valgrind, Callgrind, KCachegrind</li>
+		<li>perf</li>
+		<li><b><a href="http://hr.gs/cambridge">http://hr.gs/cambridge</a></b></li>
+</section>
 
 
 
@@ -675,20 +697,20 @@ private:
 				],
 
 				chart: {
-						defaults: { 
-							global: { 
-								title: { fontColor: "#FFF" }, 
+						defaults: {
+							global: {
+								title: { fontColor: "#FFF" },
 								legend: {
 									labels: { fontColor: "#FFF" },
 								},
 							},
-							scale: { 
-								scaleLabel: { fontColor: "#FFF", labelString: 'ns' }, 
-								gridLines: { color: "#FFF", zeroLineColor: "#FFF" }, 
-								ticks: { fontColor: "#FFF", beginAtZero: true }, 
-							} 
+							scale: {
+								scaleLabel: { fontColor: "#FFF", labelString: 'ns' },
+								gridLines: { color: "#FFF", zeroLineColor: "#FFF" },
+								ticks: { fontColor: "#FFF", beginAtZero: true },
+							}
 						},
-						bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+						bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
 					},
 			});
 			Reveal.configure({ slideNumber: true, slideNumber: 'c/t' });
