@@ -355,7 +355,7 @@ public:
 
 	bool in_dictionary(std::string_view word) const
 	{
-		return _index.find(word) != _container.end(); // No allocation!
+		return _index.find(word) != _index.end(); // No allocation!
 	}
 
 private:
