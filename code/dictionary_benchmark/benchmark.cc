@@ -69,12 +69,12 @@ void InDictionary(benchmark::State& state)
 
 	//CALLGRIND_STOP_INSTRUMENTATION; // vcallgrind
 
-	//events.stop_counters();
-	//std::cout << events.get<PAPI_TOT_INS>().counter()/double(events.get<PAPI_TOT_CYC>().counter()) << " instr per cycle\n";
-	//std::cout << events.get<PAPI_TOT_INS>().counter()/double(state.iterations()) << " instructions\n";
-	//std::cout << events.get<PAPI_L1_DCM>().counter()/double(state.iterations()) << " l1 cache misses\n"
-	//		  << events.get<PAPI_BR_MSP>().counter()/double(state.iterations()) << " branch misses" << std::endl;
-	//std::cout << "iterations: " << state.iterations() << std::endl;
+	// events.stop_counters();
+	// std::cout << events.get<PAPI_TOT_INS>().counter()/double(events.get<PAPI_TOT_CYC>().counter()) << " instr per cycle\n";
+	// std::cout << events.get<PAPI_TOT_INS>().counter()/double(state.iterations()) << " instructions\n";
+	// std::cout << events.get<PAPI_L1_DCM>().counter()/double(state.iterations()) << " l1 cache misses\n"
+	// 		  << events.get<PAPI_BR_MSP>().counter()/double(state.iterations()) << " branch misses" << std::endl;
+	// std::cout << "iterations: " << state.iterations() << std::endl;
 
 	if (!allFound)
 		std::cout << "InDictionary consistency check failed" << std::endl;

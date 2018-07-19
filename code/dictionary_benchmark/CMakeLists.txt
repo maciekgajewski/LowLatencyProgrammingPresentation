@@ -19,4 +19,5 @@ target_include_directories(dictionary_benchmark SYSTEM PRIVATE "ext")
 target_link_libraries(dictionary_benchmark
 	benchmark
 	${EXTRA_LIBS}
+	#papi # Optional, needed if papi is used
 )
