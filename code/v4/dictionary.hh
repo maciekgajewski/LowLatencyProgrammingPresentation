@@ -32,7 +32,7 @@ public:
 	{
 		auto hash = std::hash<string_view>()(word);
 
-		auto idx = index(hash);
+		auto idx = hash & (hashTable_.size()-1);;
 		std::size_t attempts = 0;
 
 		while (attempts < size_)
@@ -45,7 +45,7 @@ public:
 			if(entry.hash == hash && *entry.string == word)
 				return true;
 
-			idx = next(idx);
+			idx = (idx + 1) & (hashTable_.size()-1);
 			attempts++;
 		}
 		return false;
@@ -57,14 +57,14 @@ private:
 	{
 		string_view sv(s);
 		auto hash = std::hash<string_view>()(sv);
-		auto idx = index(hash);
+		auto idx = hash & (hashTable_.size()-1);;
 
 		while(true)
 		{
 			Entry& entry = hashTable_[idx];
 			if (entry.string)
 			{
-				idx = next(idx);
+				idx = (idx + 1) & (hashTable_.size()-1);
 			}
 			else
 			{
@@ -74,9 +74,6 @@ private:
 			}
 		}
 	}
-
-	std::size_t index(std::size_t hash) const { return hash & (hashTable_.size()-1); }
-	std::size_t next(std::size_t idx) const { return (idx + 1) & (hashTable_.size()-1); }
 
 	struct Entry
 	{
