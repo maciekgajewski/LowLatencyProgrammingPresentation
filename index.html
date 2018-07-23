@@ -176,7 +176,7 @@ void NotInDictionary(benchmark::State& state)
 	for(auto _ : state)
 	{
 		std::string_view word = unknown_words[idx];
-		idx = (idx+1) % words.size();
+		idx = (idx+1) % unknown_words.size();
 		benchmark::DoNotOptimize(dict.in_dictionary(word));
 	}
 }
@@ -224,7 +224,8 @@ public:
 
 	bool in_dictionary(std::string_view word) const
 	{
-		return _container.find({word.data(), word.size()}) != _container.end();
+		return _container.find({word.data(), word.size()}) !=
+			_container.end();
 	}
 
 private:
@@ -246,7 +247,8 @@ public:
 
 	bool in_dictionary(std::string_view word) const
 	{
-		return _container.find({word.data(), word.size()}) != _container.end();
+		return _container.find({word.data(), word.size()}) !=
+			_container.end();
 	}
 
 private:
@@ -268,7 +270,8 @@ public:
 
 	bool in_dictionary(std::string_view word) const
 	{
-		return _container.find({word.data(), word.size()}) != _container.end();
+		return _container.find({word.data(), word.size()}) !=
+			_container.end();
 	}
 
 private:
@@ -332,9 +335,9 @@ public:
 	bool in_dictionary(std::string_view word) const
 	{
 		// This line allocates, creating std::string from std::string_view
-		return _container.find({word.data(), word.size()}) != _container.end();
+		return _container.find({word.data(), word.size()}) != 
+			_container.end();
 	}
-
 private:
 	std::unordered_set&lt;std::string&gt; _container; // Stores std::string
 };
@@ -474,7 +477,7 @@ private:
 		{
 			const Entry& entry = hashTable_[idx];
 
-			// detect emptybucket
+			// detect empty bucket
 			if (!entry.string)
 				return false;
 
@@ -509,12 +512,36 @@ private:
 	</canvas>
 </section>
 
-
+<section>
+	<h3>Pro tip</h3>
+	<ul>
+		<li>Find 3rd party implementation</li>
+		<li>For example: <b>google::dense_hash_map</b></li>
+		<li><a href="https://github.com/sparsehash/sparsehash">https://github.com/sparsehash/sparsehash</a></li>
+	</ul>
+</section>
 
 
 <section>
 	<h1>Step 5</h1>
 	<h3>CPU instructions</h3>
+</section>
+
+<section>
+	<h3>Compiler Explorer</h3>
+	<ul>
+		<li>Great tool for looking at generated assembly code</li>
+		<li><a href="https://godbolt.org/">https://godbolt.org/</a></li>
+	</ul>
+	<div>
+		<img src="pics/tool.png"/>
+	</div>
+</section>
+
+<section>
+	<div  class="stretch">
+		<img src="pics/compiler-explorer.png"/>
+	</div>
 </section>
 
 <section>
@@ -660,7 +687,9 @@ private:
 		<li>Papi++ : https://github.com/david-grs/papipp</li>
 		<li>Google Benchmark</li>
 		<li>Valgrind, Callgrind, KCachegrind</li>
+		<li>Compiler Explorer</li>
 		<li>perf</li>
+		<li><a href="mailto:maciej.gajewski0@gmail.com">maciej.gajewski0@gmail.com</a></li>
 	</ul>
 </section>
 
