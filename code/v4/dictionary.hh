@@ -32,7 +32,7 @@ public:
 	{
 		auto hash = std::hash<string_view>()(word);
 
-		auto idx = hash & (hashTable_.size()-1);;
+		auto idx = hash & (hashTable_.size()-1);
 		std::size_t attempts = 0;
 
 		while (attempts < size_)
@@ -57,7 +57,7 @@ private:
 	{
 		string_view sv(s);
 		auto hash = std::hash<string_view>()(sv);
-		auto idx = hash & (hashTable_.size()-1);;
+		auto idx = hash & (hashTable_.size()-1);
 
 		while(true)
 		{
